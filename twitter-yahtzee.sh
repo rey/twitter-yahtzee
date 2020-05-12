@@ -37,6 +37,11 @@ echo "${hand[1]#dice_} ${hand[2]#dice_} ${hand[3]#dice_} ${hand[4]#dice_} ${hand
 
 score_card="${!hand[1]} ${!hand[2]} ${!hand[3]} ${!hand[4]} ${!hand[5]}"
 
+# Update database
+sqlite3 database.db < yahtzee-hands.sqlite3
+sqlite3 database.db "insert into yahtzee_score_table (thing) values ('${!hand[1]} ${!hand[2]} ${!hand[3]} ${!hand[4]} ${!hand[5]}');"
+sqlite3 database.db ".dump" > yahtzee-hands.sqlite3
+
 # Update twitter profile with the hand in the form "⚀ ⚁ ⚀ ⚁ ⚃"
 twurl \
     --consumer-key ${twitter_consumer_api_key} \
